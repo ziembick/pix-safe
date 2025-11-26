@@ -1,0 +1,29 @@
+# Git
+.git
+.gitignore
+.gitattributes
+
+# Docker
+Dockerfile
+docker-compose.yml
+Dockerrun.aws.json
+.dockerignore
+
+# Maven
+target/
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.project
+.classpath
+.settings
+
+# Local environment and data
+.env
+mysql-data/
+postgres-data/
+
+# Documentation and other files
+README.md

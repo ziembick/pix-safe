@@ -1,0 +1,49 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: postgres_db_pix_safe
+    environment:
+      POSTGRES_DB: db_pix_safe # Nome do banco de dados
+      POSTGRES_USER: ${POSTGRES_USER} # Lida do arquivo .env
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD} # Lida do arquivo .env
+    ports:
+      - "5432:5432"
+    volumes:
+    # isso
+      - postgres_volume:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build: .
+    container_name: db-pix-safe
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      # --- Conexão com PostgreSQL 17 em Docker ---
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/db_pix_safe?connectTimeout=10&socketTimeout=30
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER} # Lida do arquivo .env
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD} # Lida do arquivo .env
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_SHOW_SQL: "false"
+      SPRING_DATASOURCE_HIKARI_MAXIMUM_POOL_SIZE: 5
+      SPRING_DATASOURCE_HIKARI_CONNECTION_TIMEOUT: 30000
+      SPRING_DATASOURCE_HIKARI_IDLE_TIMEOUT: 600000
+      SPRING_DATASOURCE_HIKARI_MAX_LIFETIME: 1800000
+      # --- Configurações do JWT ---
+      # Mapeia diretamente para as propriedades em application.properties (ex: jwt.secret)
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRATION: ${JWT_EXPIRATION}
+      JWT_ISSUER: ${JWT_ISSUER}
+      # --- Senha inicial do admin ---
+      APP_ADMIN_INITIAL_PASSWORD: password
+      SPRING_APPLICATION_JSON: '{"app.admin.initial-password":"password"}'
+
+volumes:
+  postgres_volume:
