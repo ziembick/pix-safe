@@ -1,12 +1,34 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "602466228475.dkr.ecr.sa-east-1.amazonaws.com/safe-boleto-api:latest",
+    "Name": "602466228475.dkr.ecr.sa-east-1.amazonaws.com/safe-pix-api:latest",
     "Update": "true"
   },
   "Ports": [
     {
       "ContainerPort": 8080
+    }
+  ],
+  "Environment": [
+    {
+      "Name": "DB_HOST",
+      "Value": "db-pix-safe.c8buq4ysur9x.us-east-1.rds.amazonaws.com"
+    },
+    {
+      "Name": "DB_PORT",
+      "Value": "5432"
+    },
+    {
+      "Name": "DB_USER",
+      "Value": "postgres"
+    },
+    {
+      "Name": "DB_PASSWORD",
+      "Value": "Ofwgkta#420"
+    },
+    {
+      "Name": "DB_NAME",
+      "Value": "db_pix_safe"
     }
   ]
 }

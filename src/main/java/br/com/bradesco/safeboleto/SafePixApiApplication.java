@@ -6,10 +6,11 @@ import org.springframework.retry.annotation.EnableRetry;
 
 @SpringBootApplication
 @EnableRetry
-public class SafeBoletoApiApplication {
+public class SafePixApiApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SafeBoletoApiApplication.class, args);
+		SpringApplication.run(SafePixApiApplication.class, args);
 	}
 
 }
+

@@ -1,6 +1,6 @@
-# Manual Técnico e de Desenvolvimento - SafeBoleto API
+# Manual Técnico e de Desenvolvimento - SafePix API
 
-Este documento serve como um guia completo para desenvolvedores que trabalham no projeto SafeBoleto API. Ele cobre a estrutura do projeto, o gerenciamento com Docker e Git, e a arquitetura do backend.
+Este documento serve como um guia completo para desenvolvedores que trabalham no projeto SafePix API. Ele cobre a estrutura do projeto, o gerenciamento com Docker e Git, e a arquitetura do backend.
 
 ## 1. Guia de Comandos Essenciais
 
@@ -28,7 +28,7 @@ O Docker é usado para criar um ambiente de desenvolvimento e produção consist
 -   **Acessar o Banco de Dados PostgreSQL Diretamente:**
     ```bash
     # Abre um shell interativo dentro do contêiner do banco
-    docker-compose exec db psql -U ${POSTGRES_USER} -d safeboleto_db
+    docker-compose exec db psql -U ${POSTGRES_USER} -d safepix_db
     ```
     *(Você pode precisar substituir `${POSTGRES_USER}` pelo valor real do seu arquivo `.env`)*
 
@@ -82,25 +82,29 @@ O Git é usado para versionamento de código.
 1.  **Requisição de Login**: O usuário envia `username` e `password` para `POST /api/auth/login`.
 2.  **`AuthenticationController`**: Recebe a requisição e usa o `AuthenticationManager` do Spring Security para validar as credenciais.
 3.  **`JwtService`**: Se a autenticação for bem-sucedida, este serviço é chamado para gerar um token JWT. O token inclui o nome do usuário (`sub`) e suas permissões (`roles`) como "claims".
-4.  **Requisições Protegidas**: Para acessar endpoints como `POST /api/boleto/valida`, o cliente deve enviar o token no cabeçalho `Authorization: Bearer <token>`.
+4.  **Requisições Protegidas**: Para acessar endpoints como `POST /api/pix/valida`, o cliente deve enviar o token no cabeçalho `Authorization: Bearer <token>`.
 5.  **`JwtAuthenticationFilter`**: Este filtro intercepta todas as requisições. Se um token JWT válido é encontrado, ele extrai as informações (usuário e `roles`) e cria um objeto de autenticação, inserindo-o no `SecurityContextHolder`. Isso torna o usuário "logado" para aquela requisição.
-6.  **`@PreAuthorize`**: A anotação no `BoletoController` (`@PreAuthorize("hasAnyRole('USER', 'ADMIN')")`) verifica se o usuário autenticado pelo filtro possui a permissão necessária para executar o método.
+6.  **`@PreAuthorize`**: A anotação no `PixController` (`@PreAuthorize("hasAnyRole('USER', 'ADMIN')")`) verifica se o usuário autenticado pelo filtro possui a permissão necessária para executar o método.
 
-### 2.3. Fluxo de Validação de Boletos
+### 2.3. Fluxo de Validação de PIX
 
-1.  **`BoletoController`**: Recebe a requisição em `POST /api/boleto/valida` com a linha digitável.
-2.  **`BoletoService`**: Orquestra toda a lógica de validação:
-    a.  **Validação de Formato**: Verifica se a linha tem 47 dígitos numéricos.
-    b.  **Checagem de Banco Confiável**: Extrai o código do banco (3 primeiros dígitos) e consulta a tabela `trusted_banks` através do `TrustedBankRepository`. Se não encontrar, a validação falha.
-    c.  **Validação de Dígitos Verificadores (Módulo 10)**: Calcula o dígito verificador de cada um dos três primeiros campos da linha digitável e os compara com os dígitos informados.
-    d.  **Validação do Dígito Verificador Geral (Módulo 11)**: Remonta o código de barras de 44 posições e calcula seu dígito verificador geral, comparando-o com o dígito informado na linha digitável.
-3.  **Persistência**: O resultado de cada tentativa de validação (seja sucesso ou falha) é salvo na tabela `boleto_validation` através do `BoletoValidationRepository`.
-4.  **Resposta**: O serviço retorna um `BoletoValidationResponse` com o status (`valid`), o nome do banco e uma mensagem descritiva.
+1.  **`PixController`**: Recebe a requisição em `POST /api/pix/valida` com os dados da transação PIX.
+2.  **`PixService`**: Orquestra toda a lógica de validação e detecção de fraudes:
+    a.  **Validação de Formato da Chave PIX**: Verifica se a chave está em um formato válido (CPF, CNPJ, e-mail, telefone ou chave aleatória).
+    b.  **Checagem de Banco Confiável**: Consulta a tabela `trusted_banks` através do `TrustedBankRepository` para verificar se o banco é confiável.
+    c.  **Verificação de Lista Negra**: Verifica se a chave PIX está em uma lista negra de fraudes conhecidas.
+    d.  **Validação de Compatibilidade de Documentos**: Verifica se o documento do destinatário é compatível com o tipo de chave PIX.
+    e.  **Detecção de Valores Suspeitos**: Analisa se o valor da transação está dentro de padrões normais.
+    f.  **Detecção de Nomes Suspeitos**: Verifica se o nome do destinatário contém palavras suspeitas.
+    g.  **Validação de CPF/CNPJ**: Valida a estrutura e dígitos verificadores de CPF/CNPJ quando aplicável.
+3.  **Cálculo de Score de Risco**: Com base em todas as verificações, calcula um score de risco de 0-100.
+4.  **Persistência**: O resultado de cada tentativa de validação (seja sucesso ou falha) é salvo na tabela `pix_validations` através do `PixValidationRepository`.
+5.  **Resposta**: O serviço retorna um `PixValidationResponse` com o status (`valid`), informações do banco, tipo de chave, score de risco e uma mensagem descritiva.
 
 ### 2.4. Inicialização de Dados (`DataInitializer`)
 
 Esta classe é executada na inicialização da aplicação e tem duas funções principais:
 1.  **Criar Usuário Padrão**: Verifica se o usuário `admin` existe. Se não, cria-o com a senha padrão definida em `application.properties` (`app.admin.initial-password=password`) e atribui as roles `ADMIN` e `USER`.
-2.  **Popular Bancos Confiáveis**: Insere na tabela `trusted_banks` uma lista inicial de bancos brasileiros (Bradesco, Itaú, etc.) para que a validação de boletos possa funcionar imediatamente.
+2.  **Popular Bancos Confiáveis**: Insere na tabela `trusted_banks` uma lista inicial de bancos brasileiros (Bradesco, Itaú, etc.) para que a validação de PIX possa funcionar imediatamente.
 
 ---

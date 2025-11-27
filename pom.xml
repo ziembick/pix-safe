@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.bradesco.safeboleto</groupId>
-	<artifactId>safe-boleto-api</artifactId>
+	<artifactId>safe-pix-api</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>safe-boleto-api</name>
-	<description>Demo project for Spring Boot</description>
+	<name>safe-pix-api</name>
+	<description>API para validação de transações PIX com detecção de fraudes</description>
 	<url/>
 	<licenses>
 		<license/>

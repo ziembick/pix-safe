@@ -26,8 +26,9 @@ services:
       db:
         condition: service_healthy
     environment:
+    
       # --- Conexão com PostgreSQL 17 em Docker ---
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/db_pix_safe?connectTimeout=10&socketTimeout=30
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db-pix-safe.c8buq4ysur9x.us-east-1.rds.amazonaws.com:5432/db_pix_safe?connectTimeout=10&socketTimeout=30
       SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER} # Lida do arquivo .env
       SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD} # Lida do arquivo .env
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
