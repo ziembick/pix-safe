@@ -8,10 +8,10 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.bradesco.safeboleto</groupId>
-	<artifactId>safe-boleto-api</artifactId>
+	<groupId>br.com.bradesco.safepix</groupId>
+	<artifactId>safepix</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>safe-boleto-api</name>
+	<name>safepix</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>

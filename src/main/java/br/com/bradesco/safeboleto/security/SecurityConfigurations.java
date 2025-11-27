@@ -37,7 +37,7 @@ public class SecurityConfigurations {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(req -> {
                     req.requestMatchers(AUTH_WHITELIST).permitAll();
-                    req.requestMatchers("/api/boleto/**").authenticated();
+                    req.requestMatchers("/api/pix/**").authenticated();
                     // Todas as outras requisições exigirão autenticação
                     req.anyRequest().authenticated();
                 })

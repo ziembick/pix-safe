@@ -1,7 +1,7 @@
 {
   "AWSEBDockerrunVersion": "1",
   "Image": {
-    "Name": "602466228475.dkr.ecr.sa-east-1.amazonaws.com/safe-boleto-api:latest",
+    "Name": "602466228475.dkr.ecr.sa-east-1.amazonaws.com/safe-pix-api:latest",
     "Update": "true"
   },
   "Ports": [

@@ -17,11 +17,10 @@ public class OpenApiConfig {
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("SafeBoleto & SafePix API")
+                        .title("SafePix API")
                         .version("2.0")
-                        .description("API para validação de boletos bancários e transações PIX, com detecção avançada de fraudes.\n\n" +
+                        .description("API para validação de transações PIX com detecção avançada de fraudes.\n\n" +
                                    "**Funcionalidades:**\n" +
-                                   "- Validação de boletos bancários (linha digitável 47 dígitos)\n" +
                                    "- Validação de transações PIX com detecção de fraudes\n" +
                                    "- Sistema de score de risco (0-100)\n" +
                                    "- Autenticação JWT\n" +
