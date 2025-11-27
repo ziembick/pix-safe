@@ -8,11 +8,11 @@
 		<version>3.3.3</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>br.com.bradesco.safeboleto</groupId>
-	<artifactId>safe-pix-api</artifactId>
+	<groupId>br.com.bradesco.safepix</groupId>
+	<artifactId>safepix</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>safe-pix-api</name>
-	<description>API para validação de transações PIX com detecção de fraudes</description>
+	<name>safepix</name>
+	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
 		<license/>

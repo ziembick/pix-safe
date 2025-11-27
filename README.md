@@ -2,15 +2,15 @@
 
 [![Java CI with Maven](https://github.com/Luc4sD/safe-boleto-api/actions/workflows/ci.yml/badge.svg)](https://github.com/Luc4sD/safe-boleto-api/actions/workflows/ci.yml)
 
-API RESTful desenvolvida com Spring Boot para validação de transações PIX com detecção avançada de fraudes. O sistema verifica múltiplos indicadores de fraude, incluindo formato da chave, lista negra, compatibilidade de documentos, valores suspeitos, nomes suspeitos e validação de CPF/CNPJ, oferecendo um sistema de score de risco de 0-100.
+API RESTful desenvolvida com Spring Boot para validação de transações PIX e detecção de fraudes. O sistema verifica múltiplos indicadores de fraude, incluindo formato da chave PIX, lista negra, compatibilidade de documentos, valores suspeitos, nomes suspeitos e validação de CPF/CNPJ, oferecendo um endpoint seguro para consulta e prevenindo fraudes.
 
 ## ✨ Funcionalidades
 
--   **Validação de Transações PIX**: Endpoint REST para validar transações PIX com detecção de fraudes.
--   **Sistema de Score de Risco**: Retorna um score de risco de 0-100 para cada transação validada.
+-   **Validação de Transações PIX**: Endpoint REST para validar transações PIX com detecção avançada de fraudes.
+-   **Sistema de Score de Risco**: Calcula um score de risco de 0-100 baseado em múltiplos indicadores.
 -   **Verificação de Banco Emissor**: Checa se o código do banco pertence a uma lista de instituições confiáveis.
--   **Validação de Chaves PIX**: Suporta CPF, CNPJ, e-mail, telefone e chave aleatória.
--   **Lista Negra**: Verifica se a chave PIX está em uma lista negra de fraudes conhecidas.
+-   **Validação de Chaves PIX**: Suporta CPF, CNPJ, Email, Telefone e Chave Aleatória (EVP).
+-   **Lista Negra**: Verifica chaves PIX e documentos conhecidos por fraude.
 -   **Segurança**: Autenticação baseada em JWT para proteger os endpoints.
 -   **Documentação de API**: Geração automática de documentação com Swagger (OpenAPI).
 -   **Histórico de Validações**: Armazena o resultado de cada validação em um banco de dados PostgreSQL.

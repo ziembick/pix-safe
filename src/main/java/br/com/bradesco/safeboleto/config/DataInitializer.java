@@ -56,6 +56,6 @@ public class DataInitializer implements CommandLineRunner {
             System.out.println("[INIT] Bancos confiáveis carregados: " + banks.size() + " bancos.");
         }
         
-        System.out.println("[INIT] Inicialização completa. Sistema pronto para validar PIX!");
+        System.out.println("[INIT] Inicialização completa. Sistema pronto para validar transações PIX!");
     }
 }
